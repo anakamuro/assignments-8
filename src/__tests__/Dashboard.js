@@ -7,7 +7,6 @@ import { ROUTES } from "../constants/routes"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import firebase from "../__mocks__/firebase"
 import { bills } from "../fixtures/bills"
-import Firestore from "../app/Firestore.js"
 
 
 describe('Given I am connected as an Admin', () => {
@@ -95,7 +94,7 @@ describe('Given I am connected as an Admin', () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-      const firestore = new Firestore();
+      const firestore = null
 
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       const dashboard = new Dashboard({
@@ -135,7 +134,7 @@ describe('Given I am connected as Admin, and I am on Dashboard page, and I click
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-      const firestore = new Firestore();
+      const firestore = null
       const dashboard = new Dashboard({
         document, onNavigate, firestore, bills, localStorage: window.localStorage
       })
@@ -160,7 +159,7 @@ describe('Given I am connected as Admin, and I am on Dashboard page, and I click
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-      const firestore = new Firestore();
+      const firestore = null
       const dashboard = new Dashboard({
         document, onNavigate, firestore, bills, localStorage: window.localStorage
       })
@@ -187,7 +186,7 @@ describe('Given I am connected as Admin and I am on Dashboard page and I clicked
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-      const firestore = new Firestore();
+      const firestore = null
       const dashboard = new Dashboard({
         document, onNavigate, firestore, bills, localStorage: window.localStorage
       })
@@ -233,4 +232,3 @@ describe("Given I am a user connected as Admin", () => {
     })
   })
 })
-

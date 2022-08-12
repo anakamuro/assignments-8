@@ -7,9 +7,18 @@ import { localStorageMock } from "../__mocks__/localStorage"
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", () => {
-      const html = BillsUI({ data: []})
+      const html = BillsUI({ data: bills})
       document.body.innerHTML = html
+
       //to-do write expect expression
+      
+      const icon1 = screen.getByTestId('layout-icon1')
+      const icon2 = screen.getByTestId('layout-icon2')
+      const icon3 = screen.getByTestId('layout-disconnect')
+      expect(icon1).toHaveClass('active-icon')
+      expect(icon2).toHaveClass('active-icon')
+      expect(icon3).toHaveClass('active-icon')
+      
     })
     test("Then bills should be ordered from earliest to latest", () => {
       const html = BillsUI({ data: bills })

@@ -71,9 +71,9 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.firestore = firestore
-    $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
-    $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
-    $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
+    $('#arrow-icon1').on('click', (e) => this.handleShowTickets(e, bills, 1))
+    $('#arrow-icon2').on('click', (e) => this.handleShowTickets(e, bills, 2))
+    $('#arrow-icon3').on('click', (e) => this.handleShowTickets(e, bills, 3))
     this.getBillsAllUsers()
     new Logout({ localStorage, onNavigate })
   }
@@ -137,6 +137,9 @@ export default class {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
+        filteredBills(bills, getStatus(this.index)).forEach(bill => {
+          $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+        })
       this.counter ++
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
@@ -145,9 +148,7 @@ export default class {
       this.counter ++
     }
 
-    bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-    })
+    
 
     return bills
 

@@ -1,6 +1,6 @@
-import { screen } from "@testing-library/dom"
-import BillsUI from "../views/BillsUI.js"
-import Bills from "../containers/Bills.js"
+import { screen } from "@testing-library/dom";
+import BillsUI from "../views/BillsUI.js";
+import Bills from "../containers/Bills.js";
 import { bills } from "../fixtures/bills.js"
 import { localStorageMock } from "../__mocks__/localStorage"
 
@@ -9,16 +9,8 @@ describe("Given I am connected as an employee", () => {
     test("Then bill icon in vertical layout should be highlighted", () => {
       const html = BillsUI({ data: bills})
       document.body.innerHTML = html
-
-      //to-do write expect expression
-      
-      const icon1 = screen.getByTestId('layout-icon1')
-      const icon2 = screen.getByTestId('layout-icon2')
-      const icon3 = screen.getByTestId('layout-disconnect')
-      expect(icon1).toHaveClass('active-icon')
-      expect(icon2).toHaveClass('active-icon')
-      expect(icon3).toHaveClass('active-icon')
-      
+      const icon1 = screen.getByTestId('icon-window');
+      expect(icon1.classList.contains('active-icon')).toBeTruthy;
     })
     test("Then bills should be ordered from earliest to latest", () => {
       const html = BillsUI({ data: bills })

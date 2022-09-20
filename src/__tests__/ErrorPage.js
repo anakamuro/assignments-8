@@ -6,7 +6,7 @@ describe('Given I am connected on app (as an Employee or an HR admin)', () => {
     test(('Then, it should render ErrorPage with no error message'), () => {
       const html = ErrorPage()
       document.body.innerHTML = html
-      expect(screen.getAllByText('Erreur')).toBeTruthy()
+      expect(screen.getAllByText('Error')).toBeTruthy()
       expect(screen.getByTestId('error-message').innerHTML.trim().length).toBe(0)
     })
   })

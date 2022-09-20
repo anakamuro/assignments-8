@@ -39,7 +39,7 @@ describe('Given I am connected as an Admin', () => {
     test('Then, Error page should be rendered', () => {
       const html = DashboardUI({ error: 'some error message' })
       document.body.innerHTML = html
-      expect(screen.getAllByText('Erreur')).toBeTruthy()
+      expect(screen.getAllByText('Error')).toBeTruthy()
     })
   })
 
@@ -214,20 +214,20 @@ describe("Given I am a user connected as Admin", () => {
     })
     test("fetches bills from an API and fails with 404 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404"))
+        Promise.reject(new Error("Error 404"))
       )
-      const html = DashboardUI({ error: "Erreur 404" })
+      const html = DashboardUI({ error: "Error 404" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Erreur 404/)
+      const message = await screen.getByText(/Error 404/)
       expect(message).toBeTruthy()
     })
     test("fetches messages from an API and fails with 500 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 500"))
+        Promise.reject(new Error("Error 500"))
       )
-      const html = DashboardUI({ error: "Erreur 500" })
+      const html = DashboardUI({ error: "Error 500" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Erreur 500/)
+      const message = await screen.getByText(/Error 500/)
       expect(message).toBeTruthy()
     })
   })

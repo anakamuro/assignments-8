@@ -8,6 +8,7 @@ import Logout from "../containers/Logout.js"
 import userEvent from "@testing-library/user-event";
 import firestore from "../app/Firestore.js";
 import firebase from "../__mocks__/firebase"
+import { ROUTES, ROUTES_PATH } from "../constants/routes";
 
 describe('When I am on Bills page but it is loading', () => {
   test('Then, Loading page should be rendered', () => {
@@ -26,6 +27,16 @@ describe('When I am on page but back-end send an error message', () => {
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
+    let onNavigate;
+    beforeEach(() => {
+      onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
+      });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+    });
     test("Then bill icon in vertical layout should be highlighted", () => {
       const html = BillsUI({ data: bills})
       document.body.innerHTML = html
@@ -46,6 +57,7 @@ describe("Given I am connected as an employee", () => {
 describe("When I click on the New Bill button", () => {
   test("Then the New Bill form should be rendered", () => {
     document.body.innerHTML = BillsUI({ data: bills });
+    let onNavigate;
      onNavigate = jest.fn();
 
     new Bills({
@@ -68,7 +80,7 @@ describe("When I click on the New Bill button", () => {
     expect(screen.getAllByText("Send a fee")).toBeTruthy();
   });
 });
-
+/*
 describe("When I click on icon Eye button", () => {
   test("Then the modal which has a form will show", () => {
     handleClickIconEye() = jest.fn()
@@ -77,7 +89,7 @@ describe("When I click on icon Eye button", () => {
     expect('handleClickIconEye').toHaveBeenCalled;
   })
 })
-
+*/
 describe('Given I am connected', () => {
   describe('When I click on disconnect button', () => {
     test(('Then, I should be sent to login page'), () => {
@@ -111,20 +123,20 @@ describe("Given I am a user connected as Employee", () => {
     })
     test("fetches bills from an API and fails with 404 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404"))
+        Promise.reject(new Error("Error 404"))
       )
-      const html = BillsUI({ error: "Erreur 404" })
+      const html = BillsUI({ error: "Error 404" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Erreur 404/)
+      const message = await screen.getByText(/Error 404/)
       expect(message).toBeTruthy()
     })
     test("fetches messages from an API and fails with 500 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 500"))
+        Promise.reject(new Error("Error 500"))
       )
-      const html = BillsUI({ error: "Erreur 500" })
+      const html = BillsUI({ error: "Error 500" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Erreur 500/)
+      const message = await screen.getByText(/Error 500/)
       expect(message).toBeTruthy()
     })
   })

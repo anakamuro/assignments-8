@@ -1,10 +1,13 @@
-import { screen, fireEvent} from "@testing-library/dom"
+import { screen, render } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import firebase from "../__mocks__/firebase"
-import BillUI from "../views/NewBillUI.js"
+import BillsUI from "../views/NewBillUI.js"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import { bills } from "../fixtures/bills"
+import userEvent from '@testing-library/user-event'
+
+jest.mock('../app/Firestore');
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
@@ -34,29 +37,31 @@ describe("Given I am connected as an employee", () => {
 
 // test d'intégration GET
 describe("Given I am a user connected as Employee", () => {
-  describe("When I post a new bill from the new bill form", () => {
+  describe("When I fill a new bill from the new bill form", () => {
     test("fetches bills from mock API GET", async () => {
-       const postSpy = jest.spyOn(firebase, "post")
-       const bills = await firebase.post()
-       expect(postSpy).toHaveBeenCalledTimes(1)
-       expect(response).toEqual({ 200: "<data_at_path>"})
+       const getSpy = jest.spyOn(firebase, "get")
+       const bills = await firebase.get()
+       expect(getSpy).toHaveBeenCalledTimes(1)
+       expect(bills.data.length).toBe(4);
     })
-    test("posts bills from mock API and fails with 404 message error", async () => {
-      firebase.post.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404"))
+    test("fetches new bill from mock API and fails with 404 message error", async () => {
+      firebase.get.mockImplementationOnce(() =>
+        Promise.reject(new Error("Error 404"))
       )
-      const html = BillsUI({ error: "Erreur 404" })
+      console.log("screen", screen)
+      const html = BillsUI({ error: "Error 404" })
       document.body.innerHTML = html
-      const message = screen.getByText(/Erreur 404/)
+      const message = screen.getByText(/Error 404/)
+      
       expect(message).toBeTruthy()
     })
-    test("posts bill from mock API and fails with 500 message error", async () => {
-      firebase.post.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 500"))
+    test("fetches message from mock API and fails with 500 message error", async () => {
+      firebase.get.mockImplementationOnce(() =>
+        Promise.reject(new Error('Error 500'))
       )
-      const html = BillsUI({ error: "Erreur 500" })
+      const html = BillsUI({ error: 'Error 500' })
       document.body.innerHTML = html
-      const message = screen.getByText(/Erreur 500/)
+      const message = screen.getByText(/Error 500/)
       expect(message).toBeTruthy()
     })
   })

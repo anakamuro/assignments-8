@@ -2,7 +2,7 @@ import { screen, render } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import firebase from "../__mocks__/firebase"
-import BillsUI from "../views/NewBillUI.js"
+import BillsUI from "../views/BillsUI.js"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import { bills } from "../fixtures/bills"
 import userEvent from '@testing-library/user-event'
@@ -44,10 +44,11 @@ describe("Given I am a user connected as Employee", () => {
        expect(getSpy).toHaveBeenCalledTimes(1)
        expect(bills.data.length).toBe(4);
     })
-    test("fetches new bill from mock API and fails with 404 message error", async () => {
+  
+    test("fetches new bill from API and fails with 404 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
         Promise.reject(new Error("Error 404"))
-      )
+      );
       console.log("screen", screen)
       const html = BillsUI({ error: "Error 404" })
       document.body.innerHTML = html
@@ -55,14 +56,16 @@ describe("Given I am a user connected as Employee", () => {
       
       expect(message).toBeTruthy()
     })
-    test("fetches message from mock API and fails with 500 message error", async () => {
+    test("fetches message from an API and fails with 500 message error", async () => {
       firebase.get.mockImplementationOnce(() =>
         Promise.reject(new Error('Error 500'))
-      )
+      );
       const html = BillsUI({ error: 'Error 500' })
       document.body.innerHTML = html
       const message = screen.getByText(/Error 500/)
       expect(message).toBeTruthy()
     })
+    
   })
+  
 })

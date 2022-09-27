@@ -112,6 +112,29 @@ describe('Given I am connected', () => {
   })
 })
 
+describe('When I click an eye icon button in a bill', () => {
+  test('the image in a modal will appear', () => {
+    $.fn.modal = jest.fn();
+    document.body.innerHTML = BillsUI({ data: bills });
+    const bill = new Bills({
+      document,
+      onNavigate,
+      firestore: null,
+      localStorage: window.localStorage,
+    });
+    const onNavigate = (pathname) => {
+      document.body.innerHTML = ROUTES({ pathname });
+    };
+    const eye = screen.getAllByTestId("icon-eye")[0];
+    const modal = document.querySelector('.modal');
+    
+    userEvent.click(eye);
+    expect($.fn.modal).toHaveBeenCalled()
+    expect(modal).toBeTruthy();
+  });
+});
+
+
 // test d'intégration GET
 describe("Given I am a user connected as Employee", () => {
   describe("When I navigate to Bills Overview", () => {
@@ -121,22 +144,22 @@ describe("Given I am a user connected as Employee", () => {
        expect(getSpy).toHaveBeenCalledTimes(1)
        expect(bills.data.length).toBe(4)
     })
-    test("fetches bills from an API and fails with 404 message error", async () => {
+    test("fetches bills from an API and fails with 404 message error", () => {
       firebase.get.mockImplementationOnce(() =>
         Promise.reject(new Error("Error 404"))
       )
       const html = BillsUI({ error: "Error 404" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Error 404/)
+      const message = screen.getByText(/Error 404/)
       expect(message).toBeTruthy()
     })
-    test("fetches messages from an API and fails with 500 message error", async () => {
+    test("fetches messages from an API and fails with 500 message error",  () => {
       firebase.get.mockImplementationOnce(() =>
         Promise.reject(new Error("Error 500"))
       )
       const html = BillsUI({ error: "Error 500" })
       document.body.innerHTML = html
-      const message = await screen.getByText(/Error 500/)
+      const message = screen.getByText(/Error 500/)
       expect(message).toBeTruthy()
     })
   })
